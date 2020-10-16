@@ -4,7 +4,6 @@ var taskIdCounter = 0;
 var pageContentEl = document.querySelector("#page-content");
 var tasksInProgressEl = document.querySelector("#tasks-in-progress");
 var tasksCompletedEl = document.querySelector("#tasks-completed");
-
 var tasks = [];
 
 var deleteTask = function(taskId) {
@@ -199,6 +198,18 @@ var dragLeaveHandler = function(event) {
 var saveTasks = function() {
     localStorage.setItem("tasks", JSON.stringify(tasks));
 }
+var loadTasks = function() {
+    var savedTasks = localStorage.getItem("tasks");
+    if (!savedTasks) {
+        return false;
+    }
+    savedTasks = JSON.parse(savedTasks);
+
+    for (var i = 0; i < savedTasks.length; i++) {
+        createTaskEl(savedTasks[i]);
+    }
+     }
+
 
 pageContentEl.addEventListener("dragstart", dragTaskHandler);
 pageContentEl.addEventListener("click", taskButtonHandler);
@@ -207,3 +218,4 @@ pageContentEl.addEventListener("change", taskStatusChangeHandler);
 pageContentEl.addEventListener("dragover", dropZoneDragHandler);
 pageContentEl.addEventListener("drop", dropTaskHandler);
 pageContentEl.addEventListener("dragleave", dragLeaveHandler);
+loadTasks();
